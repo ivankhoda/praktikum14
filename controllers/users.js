@@ -33,7 +33,7 @@ module.exports.createUser = (req, res) => {
       password: hash,
     }))
     // eslint-disable-next-line no-shadow
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send({ data: user.toJSON() }))
     .catch((err) => res.status(500).send({ message: `Произошла ошибка ${err}` }));
 };
 
@@ -97,10 +97,11 @@ module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
   return user.findUserByCreds(email, password)
-    .then((user) => {
+    .then((u) => {
       res.send({
         token: jwt.sign(
-          { _id: user._id },
+          // eslint-disable-next-line no-underscore-dangle
+          { _id: u._id },
           'strongpassword',
           { expiresIn: '7d' },
         ),

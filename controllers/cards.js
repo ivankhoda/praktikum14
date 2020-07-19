@@ -22,6 +22,7 @@ module.exports.createCard = (req, res) => {
 module.exports.deleteCardById = (req, res) => {
   const { id } = req.params;
 
+  // eslint-disable-next-line no-underscore-dangle
   card.findOneAndDelete({ _id: `${id}`, owner: req.user._id }, ((err, result) => {
     if ((!result) || (result.length === 0)) {
       res.status(404).send({ message: `Картинка ${id} не существует или уже удалена, либо у вас нет прав для ее удаления` });

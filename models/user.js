@@ -39,8 +39,8 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    select: false,
     minlength: 8,
+    select: false,
   },
 });
 userSchema.statics.findUserByCreds = function (email, password) {
@@ -59,5 +59,12 @@ userSchema.statics.findUserByCreds = function (email, password) {
         });
     });
 };
+
+userSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
+};
+
 userSchema.plugin(uniqueValidator);
 module.exports = mongoose.model('user', userSchema);
